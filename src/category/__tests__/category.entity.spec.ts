@@ -27,6 +27,7 @@ describe('Category unit tests', ()=> {
             expect(category.description).toBe('Description of category 1');
             expect(category.is_active).toBe(true);
             expect(category.created_at).toBeInstanceOf(Date);
+            expect(category.category_id).toBeDefined();
         });
 
         test('create a deactivate category', () => {
@@ -40,6 +41,7 @@ describe('Category unit tests', ()=> {
             expect(category.description).toBe('Description of category 1');
             expect(category.is_active).toBe(false);
             expect(category.created_at).toBeInstanceOf(Date);
+            expect(category.category_id).toBeDefined();
         });
 
  
@@ -102,4 +104,6 @@ describe('Category unit tests', ()=> {
 
 
     });
+
+   
 });
