@@ -6,7 +6,7 @@ import {
     IsBoolean,
   } from "class-validator";
   import { Category } from "./category.entity";
-import { ClassValidatorFields } from "../../shared/domain/value-objects/validators/class-validator-field";
+import { ClassValidatorFields } from "../../shared/domain/validators/class-validator-field";
 
   //criar um testes que verifique os decorators
   export class CategoryRules {

@@ -2,7 +2,7 @@ import { Entity } from "../../shared/domain/entity";
 
 
 import { Uuid } from "../../shared/domain/value-objects/uuid.vo";
-import { EntityValidationError } from "../../shared/domain/value-objects/validators/validator.error";
+import { EntityValidationError } from "../../shared/domain/validators/validator.error";
 import { ValueObject } from "../../shared/domain/value-objects/value-object";
 import { CategoryValidatorFactory } from "./category.validator";
 
