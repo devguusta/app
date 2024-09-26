@@ -1,13 +1,11 @@
 import { Sequelize } from "sequelize-typescript";
 
 import { CategoryModel } from "../category.model";
-
+import { CategoryModelMapper } from "../category-model-mapper";
 import { Category } from "../../../../domain/category.entity";
 import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
-import { CategoryModelMapper } from "../category-model-mapper";
-import { EntityValidationError } from "../../../../../shared/domain/validators/validator.error";
 import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
-
+import { EntityValidationError } from "../../../../../shared/domain/validators/validator.error";
 
 describe("CategoryModelMapper Integration Tests", () => {
   setupSequelize({ models: [CategoryModel] });
