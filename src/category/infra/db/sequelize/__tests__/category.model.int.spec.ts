@@ -1,75 +1,76 @@
-import { Sequelize } from "sequelize-typescript";
-
+import { DataType, Sequelize } from "sequelize-typescript";
 import { CategoryModel } from "../category.model";
-
-import { Category } from "../../../../domain/category.entity";
-import { Uuid } from "../../../../../shared/domain/value-objects/uuid.vo";
-import { CategoryModelMapper } from "../category-model-mapper";
-import { EntityValidationError } from "../../../../../shared/domain/validators/validator.error";
 import { setupSequelize } from "../../../../../shared/infra/testing/helpers";
 
-
-describe("CategoryModelMapper Integration Tests", () => {
+describe("CategoryModel Integration Tests", () => {
   setupSequelize({ models: [CategoryModel] });
 
-  it("should throws error when category is invalid", () => {
-    const model = CategoryModel.build({
+  test("mapping props", () => {
+    const attributesMap = CategoryModel.getAttributes();
+    const attributes = Object.keys(CategoryModel.getAttributes());
+
+    expect(attributes).toStrictEqual([
+      "category_id",
+      "name",
+      "description",
+      "is_active",
+      "created_at",
+    ]);
+
+    const categoryIdAttr = attributesMap.category_id;
+    expect(categoryIdAttr).toMatchObject({
+      field: "category_id",
+      fieldName: "category_id",
+      primaryKey: true,
+      type: DataType.UUID(),
+    });
+
+    const nameAttr = attributesMap.name;
+    expect(nameAttr).toMatchObject({
+      field: "name",
+      fieldName: "name",
+      allowNull: false,
+      type: DataType.STRING(255),
+    });
+
+    const descriptionAttr = attributesMap.description;
+    expect(descriptionAttr).toMatchObject({
+      field: "description",
+      fieldName: "description",
+      allowNull: true,
+      type: DataType.TEXT(),
+    });
+
+    const isActiveAttr = attributesMap.is_active;
+    expect(isActiveAttr).toMatchObject({
+      field: "is_active",
+      fieldName: "is_active",
+      allowNull: false,
+      type: DataType.BOOLEAN(),
+    });
+
+    const createdAtAttr = attributesMap.created_at;
+    expect(createdAtAttr).toMatchObject({
+      field: "created_at",
+      fieldName: "created_at",
+      allowNull: false,
+      type: DataType.DATE(3),
+    });
+  });
+
+  test("create", async () => {
+    //arrange
+    const arrange = {
       category_id: "9366b7dc-2d71-4799-b91c-c64adb205104",
-    });
-    try {
-      CategoryModelMapper.toEntity(model);
-      fail(
-        "The category is valid, but it needs throws a EntityValidationError"
-      );
-    } catch (e) {
-      expect(e).toBeInstanceOf(EntityValidationError);
-      expect((e as EntityValidationError).error).toMatchObject({
-        name: [
-          "name should not be empty",
-          "name must be a string",
-          "name must be shorter than or equal to 255 characters",
-        ],
-      });
-    }
-  });
+      name: "test",
+      is_active: true,
+      created_at: new Date(),
+    };
 
-  it("should convert a category model to a category aggregate", () => {
-    const created_at = new Date();
-    const model = CategoryModel.build({
-      category_id: "5490020a-e866-4229-9adc-aa44b83234c4",
-      name: "some value",
-      description: "some description",
-      is_active: true,
-      created_at,
-    });
-    const aggregate = CategoryModelMapper.toEntity(model);
-    expect(aggregate.toJSON()).toStrictEqual(
-      new Category({
-        category_id: new Uuid("5490020a-e866-4229-9adc-aa44b83234c4"),
-        name: "some value",
-        description: "some description",
-        is_active: true,
-        created_at,
-      }).toJSON()
-    );
-  });
+    //act
+    const category = await CategoryModel.create(arrange);
 
-  test("should convert a category aggregate to a category model", () => {
-    const created_at = new Date();
-    const aggregate = new Category({
-      category_id: new Uuid("5490020a-e866-4229-9adc-aa44b83234c4"),
-      name: "some value",
-      description: "some description",
-      is_active: true,
-      created_at,
-    });
-    const model = CategoryModelMapper.toModel(aggregate);
-    expect(model.toJSON()).toStrictEqual({
-      category_id: "5490020a-e866-4229-9adc-aa44b83234c4",
-      name: "some value",
-      description: "some description",
-      is_active: true,
-      created_at,
-    });
+    //assert
+    expect(category.toJSON()).toStrictEqual(arrange);
   });
 });
