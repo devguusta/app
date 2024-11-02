@@ -1,12 +1,11 @@
 import { Op } from "sequelize";
-
 import { Uuid } from "../../../../shared/domain/value-objects/uuid.vo";
 import { Category } from "../../../domain/category.entity";
 
 import { CategoryModel } from "./category.model";
 import { CategoryModelMapper } from "./category-model-mapper";
-import { NotFoundError } from "../../../../shared/domain/errors/not-found-error";
-import { CategorySearchParams, CategorySearchResult, ICategoryRepository } from "../../../domain/repository/category.repository";
+import { CategorySearchParams, CategorySearchResult, ICategoryRepository } from "@core/category/domain/repository/category.repository";
+import { NotFoundError } from "@core/shared/domain/errors/not-found-error";
 
 export class CategorySequelizeRepository implements ICategoryRepository {
   sortableFields: string[] = ["name", "created_at"];
@@ -73,7 +72,7 @@ export class CategorySequelizeRepository implements ICategoryRepository {
         },
       }),
       ...(props.sort && this.sortableFields.includes(props.sort)
-        ? { order: [[props.sort, props.sort_dir]] }
+        ? { order: [[props.sort, props.sort_dir || 'ASC']] }
         : { order: [["created_at", "desc"]] }),
       offset,
       limit,
