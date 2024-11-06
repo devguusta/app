@@ -4,12 +4,15 @@ import { CategoriesModule } from './nest-modules/categories-module/categories.mo
 
 import { DatabaseModule } from './nest-modules/database-module/database.module';
 import { ConfigModule } from './nest-modules/config-module/config.module';
+import { SharedModule } from './shared-module/shared.module';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     DatabaseModule,
     CategoriesModule,
+    SharedModule,
     ],
   controllers: [],
   providers: [],
