@@ -205,6 +205,7 @@ const config: Config = {
   },
   collectCoverageFrom: ['**/*.(t|j)s'],
   coverageDirectory: '../coverage',
+  
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '.interface.ts',
